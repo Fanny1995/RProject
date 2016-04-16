@@ -33,7 +33,7 @@
 #class(data$STUD_NO)   integer
 #class(data[,1])   interger
 #class(data[1])   data.frame
-setwd("C:/Users/fresh guoguo/Desktop/cluster")
+setwd("C:/Users/fresh guoguo/OneDrive/R/RProject/cluster")
 data<-read.csv("2010.csv")  #行名不允许相同
 
 data<-data[grep("^5310",data$STUD_NO),] #delete not 2010 grade
