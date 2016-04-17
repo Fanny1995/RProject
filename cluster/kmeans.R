@@ -46,7 +46,11 @@ kmeans<-function(data,k=5,center=NA){   #
     }
     return (list(cluster=res,center=s1,SSE=SSE))  #sse for every cluster, not for all
 }
+<<<<<<< HEAD:cluster/kmeans.R
 kmeans_result<-kmeans(data0,k=5)   #iteration 4-21
+=======
+result<-kmeans(data0[,],k=5)   #iteration 4-21
+>>>>>>> e6397a88dc21cdeed0700e8c5dcd176be5607c74:cluster/k-means.R
 
 #use the scale data
 #calculate the center grade
