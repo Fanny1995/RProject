@@ -8,8 +8,8 @@
 #return tt,tt_term,tt_nummeaning
 #if the parameter is wrong, we cant't guarantee it right
 ################################
-pre_aprori<-function(dir="C:/Users/fresh guoguo/OneDrive/Documents/R/RProject/cj",filename="2006.csv",grade="5306"){
-  setwd(dir)
+pre_aprori<-function(dirr="C:/Users/fresh guoguo/OneDrive/Documents/R/RProject/cj",filename="2006.csv",grade="5306",selectres="all"){
+  olddir<-setwd(dirr)
   hdata<-read.csv(filename)
   hdata$COUR_NAME<-as.character(hdata$COUR_NAME)
   hdata$EXT_COURSE_NO<-as.character(hdata$EXT_COURSE_NO)
@@ -107,15 +107,25 @@ pre_aprori<-function(dir="C:/Users/fresh guoguo/OneDrive/Documents/R/RProject/cj
     t1<-c()
     for(j in 1:length(x)){
       if(!is.na(x[j])){
-        for(i in 1:5){
-          if(x[j]==label[i]){
-            y<-(j-1)*5+i
-            # names(y)<-paste(name[j],label[i])
+        if(selectres=="all"){
+          for(i in 1:5){
+            if(x[j]==label[i]){
+              y<-(j-1)*5+i
+              # names(y)<-paste(name[j],label[i])
+              t1<-c(t1,y)
+            }
+          }
+        }
+        else if(selectres=="patial"){
+          if(x[j]=="优秀"){
+            y<-(j-1)*5+1
             t1<-c(t1,y)
           }
         }
       }
     }
+    if(length(t1)==0)
+      print("有同学总的成绩一个优秀都没有")
     return (t1)
   }
   temp<-unique(data.frame(cour_no=hdata$EXT_COURSE_NO,cour_name=hdata$COUR_NAME))
@@ -123,7 +133,19 @@ pre_aprori<-function(dir="C:/Users/fresh guoguo/OneDrive/Documents/R/RProject/cj
   names(cour_no_name)<-temp[,"cour_no"]     #cour_no_name可以直接根据课程编号查找课程名字
   
   tt<-apply(newdata,1,myfunc)    #还是用apply函数快一些
-  names(tt)<-rownames(newdata)
+  names(tt)<-rownames(newdata)  
+  for(i in 1:length(tt)){
+    if(length(tt[[i]])==0){
+      tt[i]<-NULL
+    }
+  }
+  # newtt<-list() #为了防止tt结果有一个学生事务为空
+  # for(i in 1:length(tt)){
+  #   if(length(tt[[i]])!=0){
+  #     newtt<-c(newtt,tt[i])
+  #   }
+  # }
+  # tt<-newtt
   
   temp<-unique(data.frame(cour_no=hdata$EXT_COURSE_NO,term=hdata$FIRST_TERM_ID))
   cour_no_term<-as.character(temp[,"term"])
@@ -137,6 +159,10 @@ pre_aprori<-function(dir="C:/Users/fresh guoguo/OneDrive/Documents/R/RProject/cj
     label<-c("优秀","良好","中等","及格","不及格")
     return (paste(x,label))
   }))
+  setwd(olddir)
   return (list(transac=tt,tt_term=tt_term,tt_num_meaning=tt_num_meaning))
 }
-res<-pre_aprori()
+dirr="C:/Users/fresh guoguo/OneDrive/Documents/R/RProject/cj"
+filename="2006.csv"
+grade="5306"
+pre_aprori_res<-pre_aprori(selectres = "all")

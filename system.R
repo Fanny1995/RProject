@@ -1,4 +1,4 @@
-
+  
 #this is the whole system for cluster and aprori 
 
 directory<-"C:/Users/fresh guoguo/OneDrive/R/RProject/cj"

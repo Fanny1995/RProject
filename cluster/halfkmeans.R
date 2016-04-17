@@ -19,8 +19,8 @@ caltotalsse<-function(x,sse){
   return (sum(sse[x,]))
 }
 
-half.kmeans<-function(data,k=5,experimentnum=10){
-  if(k<nrow(data)){
+halfkmeans<-function(data,k=5,experimentnum=10){
+  if(k>nrow(data)){
     print("half.kmeans'data is too less")
     return 
   }
@@ -32,7 +32,6 @@ half.kmeans<-function(data,k=5,experimentnum=10){
   k=k-1 #经过k-1次循环分裂得到k个簇 
   while(k>0){
     k<-k-1  
-    # print(k)
     if(length(clusterset)==1) label<-1 else label<-which.max(totalsse)  #label 指的是最小sse的索引
     if(length(clusterset)==1) usedata<-data 
      else usedata<-data[which(totalres==clusterset[label]),] #最小sse对应的类是clusterset[label]
@@ -62,7 +61,7 @@ half.kmeans<-function(data,k=5,experimentnum=10){
     totalres[which(rownames(data) %in% rownames(usedata))]<-cluster
     totalcenter<-rbind(totalcenter,center)
     totalsse<-c(totalsse,sse)
-    print(list(clusterset,table(totalres),totalcenter,totalsse))
+    # print(list(clusterset,table(totalres),totalcenter,totalsse))
   }
   newtotalres<-totalres
   newclusterset<-clusterset
@@ -72,9 +71,9 @@ half.kmeans<-function(data,k=5,experimentnum=10){
   }
   totalres<-newtotalres
   clusterset<-newclusterset
-  return (list(cluster=totalres,center=totalcenter,sse=totalsse))
+  return (list(cluster=totalres,center=totalcenter,SSE=totalsse))
 }
-result<-half.kmeans(data0)   #出现过有一个簇的个数为1，但是簇的sse不为0？？
+halfkmeans_result<-halfkmeans(data0)   #出现过有一个簇的个数为1，但是簇的sse不为0？？
 
 
 
